@@ -1,0 +1,166 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <!-- partial -->
+      <div class="">
+       <div class="main-panel">        
+        <div class="content-wrapper">
+          <div class="row">
+             <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title text-md-center text-xl-left">Staff Account: {{ user.account_type }}</p> <hr>
+                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ user.username }}</h3> <hr>
+                    
+                    <img style="height:80px; width:80px; border-radius:10%" src="{{ user.profile.photo.url }}" alt="user profile"/>
+                    
+                 </div>  
+                  <p class="mb-0 mt-2 text-danger">Email: {{ user.email }} <span class="text-black ms-1"></span></p>
+                  <p class="mb-0 mt-2 text-danger">Department: {{ user.profile.department }} <span class="text-black ms-1"></span></p>
+                  <p class="mb-0 mt-2 text-danger text-muted">Last seen: {{ user.profile.last_seen }} <span class="text-black ms-1"></span></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">USER ACCOUNT</h4>
+                  <form class="form-sample">
+                    <p class="card-description">
+                      Personal Info
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">First Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.first_name }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Last Name</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.last_name }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Gender</label>
+                          <div class="col-sm-9">
+                            <select class="form-control">
+                              <option value="{{ user.profile.gender }}">Male</option>
+                              <option value="{{ user.profile.gender }}">Female</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Date of Birth</label>
+                          <div class="col-sm-9">
+                            <input class="form-control" value="{{ user.profile.dob }}" placeholder="dd/mm/yyyy"/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Staff ID</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.profile.staff_id }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Email</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.email }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="card-description">
+                      Other Info
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Department</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.profile.department }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">State</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.profile.state }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Phone no</label>
+                          <div class="col-sm-9">
+                            <input type="number" value="{{ user.profile.phone_no }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Bio</label>
+                          <div class="col-sm-9">
+                            <input type="textarea" value="{{ user.profile.bio }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Level</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.profile.level }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-3 col-form-label">Nationality</label>
+                          <div class="col-sm-9">
+                            <input type="text" value="{{ user.profile.nationality }}" class="form-control" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+              </div>
+      <!-- main-panel ends -->
+    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <!-- partial -->
+    <div class="">
+       <div class="main-panel">        
+        <div class="content-wrapper">
+          <div class="row">
+
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-description">
+                    {% if user.account_type == 'lecturer' %}
+                      <h4 class="card-title"> Total Appraissals {{ user.lecturer.username }} ({{ staff_count }})</h4> 
+                      <small class="text-muted">Last seen: {{ user.profile.last_seen }} </small>
+                      <hr>
+                      {% for u in staff %}
+                        <p>
+                          <img style="height:30px; width:30px; border-radius:30px" class="rounded-circle article-img" src="{{ u.user.profile.photo.url }}">
+                          <a class="text-black" href="{% url 'appraisal:appraisal-detail' u.id %}">{{ u.research_topic }}</a> - <small class="text-muted">submitted on {{ u.date_submitted }}</small> <br><br>
+                        </p>
+                      {% endfor %}
+
+                    {% elif user.account_type == 'HOD' %}
+                      <h4 class="card-title"> Total Approved Appraissals - ({{ approved_appraisal_count }})</h4>  <small class="text-muted">Last seen: {{ user.profile.last_seen }}</small> 
+                      <hr>
+                      {% for h in hod %} 
+                        <p>
+                          <img style="height:30px; width:30px; border-radius:30px" class="rounded-circle article-img" src="{{ user.profile.photo.url }}"> 
+                          <a class="text-black" href="{% url 'appraisal:appraisal-detail' h.lecturer.id %}"> 
+                          {{ h.lecturer.research_topic }}</a> - <small class="text-muted"> Signed on {{ h.date_signed }}</small>
+                          </p>
+                         <p class="text-black"> - By Lecturer {{ h.lecturer.user.first_name }} {{ h.lecturer.user.last_name }} </p>
+                      {% endfor %}
+                    {% else %}
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+        </div>
+      <!-- main-panel ends -->
+    </div>
+    
+  {% include 'pagination.html' %}
+
+{% endblock content %}

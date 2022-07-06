@@ -1,0 +1,171 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <!-- partial -->
+    <div class="">
+       <div class="main-panel">        
+        <div class="content-wrapper">
+          <div class="row">
+
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">APPROVED APPRAISALS</h4> <hr>
+                  <p class="card-description">
+                      {% for request in approved_appraisals %}
+                        {% if request %}
+
+                          <!-- Lecturer User -->
+                          {% if request.lecturer.user == current_user  %}
+                            <div class="col-lg-12 grid-margin stretch-card">
+                              <div class="card">
+                                <div class="card-body">
+                                  <h4 class="card-title">APPRAISAL INFO</h4>
+                                  <p class="card-description">
+                                    <code> HOD {{ request.hod_name }} Remarks for </code>  
+                                    <a class="text-black" href="{% url 'appraisal:appraisal-detail' request.id %}">{{ request.lecturer.research_topic }}</a>
+                                  <div class="table-responsive">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th>Quality of teaching</th>
+                                          <th>Current research</th>
+                                          <th>Research qty</th>
+                                          <th>Publication qty</th>
+                                          <th>PG supervision</th>
+                                          <th>Other department resp.</th>
+                                          <th>Contribution to university/country</th>
+                                          <th>General assessment</th>
+                                          <th>Status</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>{{ request.quality_of_teaching }}</td>
+                                          <td>{{ request.current_research }}</td>
+                                          <td>{{ request.quality_of_research }}</td>
+                                          <td>{{ request.quality_of_publications }}</td>
+                                          <td>{{ request.postgraduate_supervision }}</td>
+                                          <td>{{ request.other_departmental_responsibilities }}</td>
+                                          <td>{{ request.contribution_to_university_or_country }}</td>
+                                          <td>{{ request.general_assessment }}</td>
+                                          {% if request.recommendations == 'Approved' %}
+                                          <td style="color:green;">
+                                            {{ request.recommendations }}    
+                                          </td>
+                                          {% else %}
+                                          <td style="color:red;">
+                                            {{ request.recommendations }}    
+                                          </td>
+                                          {% endif %}
+                                        </tr>                            
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <p> 
+                              I certify that I have read the contents of this report and that my Head of Department (or Dean of College in the case where a statutory Acting Head of Department is being accessed) had discussed them with me. I have the following comments to add:
+                              <hr>
+                              <a href="{% url 'appraisal:lecturer-comment' request.id %}" type="button" class="btn btn-primary btn-icon-text btn-rounded"> <i class="ti-clipboard btn-icon-prepend"></i>Write Comment
+                              </a> <hr>
+                            </p>
+                          <!-- End Lecturer User -->
+
+                          <!-- HOD User -->
+                          {% elif current_user.account_type == 'HOD' %}
+                            <p>
+                              <a class="text-black" href="{% url 'appraisal:appraisal-detail' request.id %}">{{ request.lecturer.research_topic }}</a> - written by <a class="text-black" href="{% url 'appraisal:staff-detail' request.lecturer.user.username  %}">{{ request.lecturer.user.username }}</a> <br> 
+
+                              - <span class="text-black"> Status: {{ request.recommendations }} by <a class="text-red" href="{% url 'appraisal:staff-detail' request.hod_name  %}">{{ request.hod_name }}</a> </span>  <small class="text-muted grid-margin">signed on {{ request.date_signed }}</small> <hr>
+                            </p>
+                          {% endif %}
+
+                        {% else %}
+                          <p>No Appraisals Yet!</p>
+                        {% endif %}
+                      {% endfor %}
+
+                          <!-- Board Member -->
+                        {% if current_user.account_type == 'Assessment committee' %}
+                           {% for new_request in approved_appraisals_with_lecturer_comments %}
+                            {%  if new_request %}
+                           <!-- Board Member User -->
+                            <div class="col-lg-12 grid-margin stretch-card">
+                              <div class="card">
+                                <div class="card-body">
+                                  <h4 class="card-title">APPRAISAL INFO</h4>
+                                  <p class="card-description">
+                                    <code> HOD {{ new_request.get_appraisal.hod_name }} Remarks for </code>  
+                                    <a class="text-black" href="{% url 'appraisal:appraisal-detail' new_request.id %}">{{ new_request.get_appraisal.lecturer.research_topic }}</a> by {{ new_request.get_appraisal.lecturer.user.username }}
+                                  </p>
+                                  <div class="table-responsive">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th>Quality of teaching</th>
+                                          <th>Current research</th>
+                                          <th>Research qty</th>
+                                          <th>Publication qty</th>
+                                          <th>PG supervision</th>
+                                          <th>Other department resp.</th>
+                                          <th>Contribution to university/country</th>
+                                          <th>General assessment</th>
+                                          <th>Status</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>{{ new_request.get_appraisal.quality_of_teaching }}</td>
+                                          <td>{{ new_request.get_appraisal.current_research }}</td>
+                                          <td>{{ new_request.get_appraisal.quality_of_research }}</td>
+                                          <td>{{ new_request.get_appraisal.quality_of_publications }}</td>
+                                          <td>{{ new_request.get_appraisal.postgraduate_supervision }}</td>
+                                          <td>{{ new_request.get_appraisal.other_departmental_responsibilities }}</td>
+                                          <td>{{ new_request.get_appraisal.contribution_to_university_or_country }}</td>
+                                          <td>{{ new_request.get_appraisal.general_assessment }}</td>
+                                          {% if new_request.get_appraisal.recommendations == 'Approved' %}
+                                          <td style="color:green;">
+                                            {{ new_request.get_appraisal.recommendations }}    
+                                          </td>
+                                          {% else %}
+                                          <td style="color:red;">
+                                            {{ new_request.get_appraisal.recommendations }}    
+                                          </td>
+                                          {% endif %}
+                                        </tr>                            
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                  <br>  
+                                  
+                                    <a href="{% url 'appraisal:board-comment' new_request.get_appraisal.id %}" type="button" class="btn btn-primary btn-icon-text btn-rounded"> <i class="ti-clipboard btn-icon-prepend"></i>Write Board Comment
+                              </a> <hr>
+                                </div>
+                              </div>
+                            </div>
+                            {% else %}
+                              <p>No Appraisals Yet!</p>
+                             {% endif %}
+                            {% endfor %}
+                          {% endif %}
+                          <!-- End Board User -->
+                       
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- content-wrapper ends -->
+        </div>
+      <!-- main-panel ends -->
+    </div>
+ {% include 'pagination.html' %}
+
+{% endblock content %}

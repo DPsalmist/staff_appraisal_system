@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <!-- partial -->
+    <div class="">
+       <div class="main-panel">        
+        <div class="content-wrapper">
+          <div class="row">
+
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">APPROVED APPRAISALS</h4> <hr>
+                  <p class="card-description">
+                      {% for request in board_approved_appraisals %}
+                        {% if request %}
+
+                          <!-- Lecturer User -->
+                          {% if request.which_appraisal.get_appraisal.lecturer.user == current_user  %}
+                            <div class="col-lg-12 grid-margin stretch-card">
+                              <div class="card">
+                                <div class="card-body">
+                                  <h4 class="card-title">APPRAISAL INFO</h4>
+                                  <p class="card-description">
+                                    <code> BOARD {{ request.hod_name }} Remarks for {{ request.which_appraisal.get_appraisal }} </code>  
+                                  <div class="table-responsive">
+                                    <table class="table">
+                                      <thead>
+                                        <tr>
+                                          <th>Teaching qty</th>
+                                          <th>Research qty</th>
+                                          <th>Publication qty</th>
+                                          <th>Contribution to university/country qty</th>
+                                          <th>Acdemic qualification</th>
+                                          <th>Professional qualification</th>
+                                          <th>Teaching score</th>
+                                          <th>Research score</th>
+                                          <th>Recognized pub score</th>
+                                          <th>Contrib. to university/country score</th>
+                                          <th>Admin. experience score</th>
+                                          <th>Interview perf score</th>
+                                          <th>Recommendation</th>
+                                          <th>Percentage</th>
+                                          <th>Remarks</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr>
+                                          <td>{{ request.quality_of_teaching_grade }}</td>
+                                          <td>{{ request.quality_of_research_grade }}</td>
+                                          <td>{{ request.quality_of_publication_grade }}</td>
+                                          <td>{{ request.contribution_to_university_or_country_grade }}</td>
+                                          <td>{{ request.academic_qualification_score }}</td>
+                                          <td>{{ request.professional_qualification_score }}</td>
+                                          <td>{{ request.teaching_score }}</td>
+                                          <td>{{ request.current_research_score }}</td>
+                                          <td>{{ request.recognized_publication_score }}</td>
+                                          <td>{{ request.contribution_to_university_or_country_score }}</td>
+                                          <td>{{ request.administrative_experience_score }}</td>
+                                          <td>{{ request.interview_performance_score }}</td>
+                                          <td>{{ request.board_recommendations }}</td>
+                                          <td>{{ request.percentage }}%</td>
+                                          {% if request.remarks == 'Distinction!' %}
+                                          <td style="color:gold;">
+                                            {{ request.remarks }}    
+                                          </td>
+                                          {% elif request.remarks == 'Fair!' %}
+                                          <td style="color:green;">
+                                            {{ request.remarks }}    
+                                          </td>
+                                          {% else %}
+                                          <td style="color:brown;">
+                                            {{ request.remarks }}    
+                                          </td>
+                                          {% endif %}
+
+                                        </tr>                            
+                                      </tbody>
+                                    </table>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            {% endif %}
+                          <!-- End Lecturer User -->
+                        {% else %}
+                          <p>No Board approved appraisals yet!</p>
+                        {% endif %}
+                      {% endfor %}
+                       
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- content-wrapper ends -->
+        </div>
+      <!-- main-panel ends -->
+    </div>
+ {% include 'pagination.html' %}
+
+{% endblock content %}

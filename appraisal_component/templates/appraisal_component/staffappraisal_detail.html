@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <!-- partial -->
+      <div class="">
+       <div class="main-panel">        
+        <div class="content-wrapper">
+          <div class="row">
+             <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title text-md-center text-xl-left">Staff Account: {{ user.account_type }}</p> <hr>
+                  <div class="d-flex flex-wrap justify-content-between justify-content-md-center justify-content-xl-between align-items-center">
+                    <h3 class="mb-0 mb-md-2 mb-xl-0 order-md-1 order-xl-0">{{ user.username }}</h3> <hr>
+                    <img style="height:80px; width:80px; border-radius:10%" src="{{ user.profile.photo.url }}" alt="user profile"/>
+                    
+                  </div>  
+                  <p class="mb-0 mt-2 text-danger">Email: {{ user.email }} <span class="text-black ms-1"></span></p>
+                  <p class="mb-0 mt-2 text-danger">Department: {{ user.profile.department }} <span class="text-black ms-1"></span></p>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Research Work Info</h4>
+                    <p> 
+                      {{ object.research_topic }} - <small class="text-muted">submitted on {{ object.date_submitted |date:'F d, Y' }}</small> <br>
+                      - <span class="text-black"><a class="text-black" href="{% url 'appraisal:staff-detail' object.user.username %}">By {{ object.user }}</a> </span>
+                    </p>
+                    <hr>
+                    <p>
+                      {% if object.user == user %}
+                      <div>
+                        <a class="btn btn-info btn-sm mt-1 mb-1" href="{% url 'appraisal:appraisal-update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'appraisal:appraisal-delete' object.id %}">Delete</a>
+                      </div>
+                    {% endif %}
+
+                    {% if user.account_type == 'HOD' %}
+                      <div>
+                        <a href="{% url 'appraisal:add-remarks' %}" type="button" class="btn btn-primary btn-icon-text btn-rounded">
+                      <i class="ti-clipboard btn-icon-prepend"></i> Give Remarks
+                    </a>
+                      </div>
+                    {% endif %}
+
+                     {% if user.account_type == 'Assessment committee' %}
+                      <div>
+                        <a href="{% url 'appraisal:add-cpc-assessment' %}" type="button" class="btn btn-primary btn-icon-text btn-rounded">
+                      <i class="ti-clipboard btn-icon-prepend"></i> Give Comment
+                    </a>
+                      </div>
+                    {% endif %}
+                    </p>
+
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <!-- content-wrapper ends -->
+              </div>
+      <!-- main-panel ends -->
+    </div>
+
+
+{% endblock content %}
